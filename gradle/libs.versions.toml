@@ -8,10 +8,10 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.8.2"
 activityCompose = "1.9.0"
 composeBom = "2024.06.00"
+ksp = "1.9.24-1.0.20"
+room = "2.6.1"
 
-
-room = "2.4.0"
-koin = "3.4.0"
+koin = "3.5.6"
 orbit = "6.0.0"
 
 
@@ -31,20 +31,23 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
-insert-koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+
+insert-koin = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 
 org-orbit-core = { group = "org.orbit-mvi", name = "orbit-core", version.ref = "orbit" }
 org-orbit-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref = "orbit" }
 org-orbit-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.ref = "orbit" }
 
-
-
+[bundles]
+room = ["room-runtime", "room-ktx"]
+orbit = ["org-orbit-core", "org-orbit-compose", "org-orbit-viewmodel"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+   // alias(libs.plugins.room).apply(false)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -26,11 +28,14 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
     compileOptions {
+
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
+
         jvmTarget = "17"
     }
     buildFeatures {
@@ -64,21 +69,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Room
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
+    implementation(libs.bundles.room)
     annotationProcessor(libs.room.compiler)
+    //ksp(libs.room.compiler)
 
     // Koin
     implementation(libs.insert.koin)
 
     // Orbit
-    implementation(libs.org.orbit.core)
-    implementation(libs.org.orbit.compose)
-    implementation(libs.org.orbit.viewmodel)
+    implementation(libs.bundles.orbit)
 
-
-    /*
+    /* TODO:
       // Navigation
     implementation 'androidx.navigation:navigation-compose:2.7.7'
 
