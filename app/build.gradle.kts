@@ -63,4 +63,27 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
+
+    // Koin
+    implementation(libs.insert.koin)
+
+    // Orbit
+    implementation(libs.org.orbit.core)
+    implementation(libs.org.orbit.compose)
+    implementation(libs.org.orbit.viewmodel)
+
+
+    /*
+      // Navigation
+    implementation 'androidx.navigation:navigation-compose:2.7.7'
+
+    // Json
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    * */
 }
