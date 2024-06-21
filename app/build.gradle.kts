@@ -70,6 +70,7 @@ dependencies {
 
     implementation(libs.bundles.room)
     annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
 
     // Koin
     implementation(libs.insert.koin)
