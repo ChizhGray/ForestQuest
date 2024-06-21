@@ -1,10 +1,18 @@
 package com.golapp.forestquest
 
 import androidx.room.*
-import com.golapp.forestquest.room.entities.User
-import com.golapp.forestquest.room.interfaces.UserDao
+import com.golapp.forestquest.room.entities.*
+import com.golapp.forestquest.room.interfaces.*
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        User::class,
+        Player::class
+    ],
+    version = 2,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun playerDao(): PlayerDao
 }

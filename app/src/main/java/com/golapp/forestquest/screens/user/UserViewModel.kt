@@ -1,4 +1,4 @@
-package com.golapp.forestquest.user
+package com.golapp.forestquest.screens.user
 
 import androidx.lifecycle.ViewModel
 import com.golapp.forestquest.room.entities.User
@@ -21,6 +21,11 @@ class UserViewModel(
         getUsers()
     }
 
+    private fun getUsers() = intent {
+        val users = userDao.getAllUsers()
+        reduce { state.copy(users = users) }
+    }
+
     fun insertUser(user: User) = intent {
         userDao.insertUser(user)
         getUsers()
@@ -29,10 +34,5 @@ class UserViewModel(
     fun deleteUser(user: User) = intent {
         userDao.deleteUser(user)
         getUsers()
-    }
-
-    private fun getUsers() = intent {
-        val users = userDao.getAllUsers()
-        reduce { state.copy(users = users) }
     }
 }

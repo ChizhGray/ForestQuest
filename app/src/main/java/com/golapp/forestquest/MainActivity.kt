@@ -7,8 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.golapp.forestquest.screens.user.*
 import com.golapp.forestquest.ui.theme.ForestQuestTheme
-import com.golapp.forestquest.user.*
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {

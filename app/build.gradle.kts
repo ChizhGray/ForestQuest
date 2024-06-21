@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -78,12 +79,11 @@ dependencies {
     // Orbit
     implementation(libs.bundles.orbit)
 
-    /* TODO:
-      // Navigation
-    implementation 'androidx.navigation:navigation-compose:2.7.7'
+
+    // Navigation
+    implementation (libs.androidx.navigation.compose)
 
     // Json
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    * */
+    implementation(libs.gson)
+    implementation(libs.kotlinx.serialization.json)
 }

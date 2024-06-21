@@ -1,4 +1,4 @@
-package com.golapp.forestquest.user
+package com.golapp.forestquest.screens.user
 
 import com.golapp.forestquest.room.entities.User
 

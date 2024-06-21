@@ -1,11 +1,12 @@
 package com.golapp.forestquest.room.interfaces
 
 import androidx.room.*
+import com.golapp.forestquest.koin.DB
 import com.golapp.forestquest.room.entities.User
 
 @Dao
 interface UserDao {
-    @Query("SELECT id, name, age FROM users")
+    @Query("SELECT id, name, age FROM ${DB.TAB_USERS}")
     suspend fun getAllUsers(): List<User>
 
     @Insert
