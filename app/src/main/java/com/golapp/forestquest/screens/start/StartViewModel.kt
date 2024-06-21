@@ -14,12 +14,15 @@ data class StartViewModel(
     override val container: Container<StartState, StartSideEffect> =
         container(
             initialState = StartState(
-                players = emptyList()
+                players = emptyList(),
+                selectedPlayer = null
             )
         )
 
-    init {
-        getPlayers()
+    init { getPlayers() }
+
+    fun selectPlayer(player: Player) = intent {
+        reduce { state.copy(selectedPlayer = player) }
     }
 
     private fun getPlayers() = intent {
@@ -34,6 +37,7 @@ data class StartViewModel(
 
     fun deletePlayer(player: Player) = intent {
         playerDao.deletePlayer(player)
+        reduce { state.copy(selectedPlayer = null) }
         getPlayers()
     }
 }

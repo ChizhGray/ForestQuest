@@ -14,6 +14,7 @@ ksp = "1.9.24-1.0.20"
 navigationCompose = "2.7.7"
 room = "2.6.1"
 serialization = "1.8.0"
+material = "1.6.7"
 
 koin = "3.5.6"
 orbit = "6.0.0"
@@ -36,7 +37,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-
+androidx-material = { group = "androidx.compose.material", name = "material", version.ref = "material" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }

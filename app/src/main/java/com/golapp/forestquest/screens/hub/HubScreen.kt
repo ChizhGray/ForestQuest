@@ -1,4 +1,4 @@
-package com.golapp.forestquest.screens.user
+package com.golapp.forestquest.screens.hub
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -6,16 +6,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.dp
 import com.golapp.forestquest.room.entities.User
+import com.golapp.forestquest.widgets.ForestTopBar
 
 @Composable
-fun UserScreen(
-    paddingValues: PaddingValues,
-    vm: UserViewModel
+fun HubScreen(
+    vm: HubViewModel,
+    onBackClick: () -> Unit
 ) {
     val state by vm.container.stateFlow.collectAsState()
 
-    Column(Modifier.padding(paddingValues)) {
-
+    Column {
+        ForestTopBar(title = "HubScreen") {
+            onBackClick()
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
             Button(
                 onClick = {
