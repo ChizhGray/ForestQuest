@@ -9,46 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b037667-2e22-4699-871c-ab489eea4af7" name="Changes" comment="ff11">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/navigation/Routes.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/utils/extentions/ClassExt.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/utils/extentions/ContextExt.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/utils/extentions/StringExt.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/utils/store.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestButton.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestConfirmButton.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestDropDownList.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestIcon.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestInventory.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestInventoryItem.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestPlayerInventory.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestPlayerRow.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestPlayerSmallCard.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestPlayerStats.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/widgets/ForestTopBar.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.6/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.6/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.6/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.6/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.6/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/koin/KoinModules.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/koin/KoinModules.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/room/entities/Player.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/room/entities/Player.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/start/StartScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/start/StartScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/start/StartState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/start/StartState.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/start/StartViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/start/StartViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/user/UserScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/hub/HubScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/user/UserState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/hub/HubState.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/user/UserViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/golapp/forestquest/screens/hub/HubViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
-    </list>
+    <list default="true" id="5b037667-2e22-4699-871c-ab489eea4af7" name="Changes" comment="ff11" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,6 +49,7 @@
       <list>
         <option value="Kotlin Interface" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Enum" />
       </list>
     </option>
   </component>
