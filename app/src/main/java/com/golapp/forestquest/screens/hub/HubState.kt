@@ -1,9 +1,10 @@
 package com.golapp.forestquest.screens.hub
 
-import com.golapp.forestquest.room.entities.User
+import com.golapp.forestquest.room.entities.*
 
 data class HubState(
-    val users: List<User>
+    val player: Player,
+    val items: List<Item>
 )
 
 sealed interface HubSideEffect

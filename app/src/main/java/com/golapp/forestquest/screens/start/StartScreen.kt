@@ -1,33 +1,32 @@
 package com.golapp.forestquest.screens.start
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.forestrun.newgame.extentions.*
 import com.golapp.forestquest.room.entities.Player
+import com.golapp.forestquest.staff.PlayerClass
 import com.golapp.forestquest.widgets.*
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartScreen(
     vm: StartViewModel,
@@ -38,6 +37,22 @@ fun StartScreen(
     val context = LocalContext.current
     val scrollState = rememberLazyListState()
     val uiScope = rememberCoroutineScope()
+    val isBSVisible = remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = {
+            Log.e("bs-test", it.name + " : " + isBSVisible.value)
+            true
+        }
+    )
+    fun SheetState.showBS() {
+        isBSVisible.value = true
+        uiScope.launch { expand() }
+    }
+    fun SheetState.hideBS() {
+        isBSVisible.value = false
+        uiScope.launch { hide() }
+    }
     vm.collectSideEffect {
         when (it) {
             StartSideEffect.SimilarName -> {
@@ -81,14 +96,7 @@ fun StartScreen(
                                 .clip(RoundedCornerShape(5.dp))
                                 .background(Color.LightGray)
                                 .clickable {
-                                    uiScope.launch {
-                                        vm.insertPlayer(
-                                            Player(
-                                                name = "test_name",
-                                                classOfPlayer = "test_class"
-                                            )
-                                        )
-                                    }
+                                    sheetState.showBS()
                                 }
                         ) {
                             Column(Modifier.padding(5.dp)) {
@@ -103,6 +111,7 @@ fun StartScreen(
                                 }
                                 ForestPlayerRow(title = "", value = "Создать")
                                 ForestPlayerRow(title = "", value = "персонажа")
+                                ForestPlayerRow(title = "", value = "")
                             }
                         }
                     }
@@ -133,91 +142,72 @@ fun StartScreen(
             }
         }
     }
-    /*val sheetState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetScaffoldState(
-            initialValue = BottomSheetValue.Collapsed,
-            density = LocalDensity.current,
-            confirmValueChange = {
-                when(it) {
-                    BottomSheetValue.Collapsed -> focusManager.clearFocus()
-                    BottomSheetValue.Expanded -> { Log.i("BottomSheet", it.name) }
-                }
-                true
-            }
-        )
-    )
-    BottomSheetScaffold(
-        modifier = Modifier.imePadding(),
-        sheetPeekHeight = 0.dp,
-        scaffoldState = sheetState,
-        topBar = {
-            ForestWidgetTopBar("Начальный экран (${state.value.players.size} персонажей)")
-        },
-        content = {
-
-        },
-        sheetContent = {
+    if (isBSVisible.value) ModalBottomSheet(
+        sheetState = sheetState,
+        dragHandle = {},
+        shape = BottomSheetDefaults.HiddenShape,
+        onDismissRequest = {
+            sheetState.hideBS()
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(.6f),
-                verticalArrangement = Arrangement.SpaceBetween
+                Modifier
+                    .border(1.dp, Color.Black, RoundedCornerShape(3.dp))
+                    .padding(3.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                Column(
-                    Modifier
-                        .border(1.dp, Color.Black, RoundedCornerShape(3.dp))
-                        .padding(3.dp),
-                    verticalArrangement = Arrangement.spacedBy(5.dp)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(5.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        OutlinedTextField(
-                            modifier = Modifier.fillMaxWidth(.5f),
-                            colors = TextFieldDefaults.textFieldColors(
-                                focusedIndicatorColor = Color.Black,
-                                cursorColor = Color.White
-                            ),
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Done,
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onDone = {
-                                    focusManager.clearFocus()
-                                }
-                            ),
-                            placeholder = { Text(text = "введите имя") },
-                            value = state.value.inputFieldValue,
-                            onValueChange = {
-                                vm.changeInputFieldValue(it)
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(.5f),
+                        colors = TextFieldDefaults.colors(
+                            focusedIndicatorColor = Color.Black,
+                            cursorColor = Color.White
+                        ),
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Done,
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        ),
+                        placeholder = { Text(text = "введите имя") },
+                        value = state.inputFieldValue,
+                        onValueChange = {
+                            vm.changeInputFieldValue(it)
+                        }
+                    )
+                    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                        Text(text = "выбери класс:")
+                        ForestDropDownListButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            title = state.playerClass?.name ?: "No class",
+                            isActive = true,
+                            items = PlayerClass.entries.map { it.name },
+                            onItemClick = {
+                                vm.changePlayerClass(PlayerClass.entries[it])
                             }
                         )
-                        Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Text(text = "выбери класс:")
-                            ForestDropDownListButton(
-                                modifier = Modifier.fillMaxWidth(),
-                                title = state.value.playerClass.title,
-                                isActive = true,
-                                items = ForestPlayerClass.entries.map { it.title },
-                                onItemClick = {
-                                    vm.changePlayerClass(ForestPlayerClass.entries[it])
-                                }
-                            )
-                        }
                     }
-                    ForestButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        title = "Создать игрока",
-                        isActive = state.value.inputFieldValue.isNotBlank()
-                    ) {
-                        vm.addNewPlayer()
-                        uiScope.launch { sheetState.bottomSheetState.collapse() }
-                    }
+                }
+                ForestButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = "Создать игрока",
+                    isActive = state.inputFieldValue.isNotBlank() && state.playerClass != null
+                ) {
+                    state.playerClass?.let { vm.insertPlayer(Player(name = state.inputFieldValue, classOfPlayer = it.name)) }
+                    sheetState.hideBS()
                 }
             }
         }
-    )
-*/
-
+    }
 }

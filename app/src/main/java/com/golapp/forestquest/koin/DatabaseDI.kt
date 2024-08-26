@@ -6,7 +6,7 @@ import com.golapp.forestquest.AppDatabase
 
 object DB {
     const val DB_NAME = "app_database"
-    const val TAB_USERS = "users"
+    const val TAB_ITEMS = "items"
     const val TAB_PLAYERS = "players"
 }
 

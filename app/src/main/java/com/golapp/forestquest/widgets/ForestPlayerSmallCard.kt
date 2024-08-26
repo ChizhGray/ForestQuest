@@ -35,6 +35,7 @@ fun ForestPlayerSmallCard(
             }
             ForestPlayerRow(title = "name", value = player.name)
             ForestPlayerRow(title = "class", value = player.classOfPlayer)
+            ForestPlayerRow(title = "id", value = player.id.toString())
         }
     }
 }

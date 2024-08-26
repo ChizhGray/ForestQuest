@@ -1,38 +1,45 @@
 package com.golapp.forestquest.screens.hub
 
 import androidx.lifecycle.ViewModel
-import com.golapp.forestquest.room.entities.User
-import com.golapp.forestquest.room.interfaces.UserDao
+import com.golapp.forestquest.room.entities.*
+import com.golapp.forestquest.room.interfaces.ItemsDao
 import org.orbitmvi.orbit.*
 import org.orbitmvi.orbit.syntax.simple.*
 import org.orbitmvi.orbit.viewmodel.container
 
 class HubViewModel(
-    private val userDao: UserDao
+    player: Player,
+    private val itemsDao: ItemsDao
 ) : ContainerHost<HubState, HubSideEffect>, ViewModel() {
     override val container: Container<HubState, HubSideEffect> =
         container(
             initialState = HubState(
-                users = emptyList()
+                player = player,
+                items = emptyList()
             )
         )
 
     init {
-        getUsers()
+        getUsersByPlayerId()
     }
 
-    private fun getUsers() = intent {
-        val users = userDao.getAllUsers()
-        reduce { state.copy(users = users) }
+    private fun getUsersByPlayerId() = intent {
+        val users = itemsDao.getAllItemsByPlayerId(state.player.id)
+        reduce { state.copy(items = users) }
     }
 
-    fun insertUser(user: User) = intent {
-        userDao.insertUser(user)
-        getUsers()
+    fun getUsers() = intent {
+        val users = itemsDao.getAllItems()
+        reduce { state.copy(items = users) }
     }
 
-    fun deleteUser(user: User) = intent {
-        userDao.deleteUser(user)
-        getUsers()
+    fun insertUser(item: Item) = intent {
+        itemsDao.insertItem(item)
+        getUsersByPlayerId()
+    }
+
+    fun deleteUser(item: Item) = intent {
+        itemsDao.deleteItem(item)
+        getUsersByPlayerId()
     }
 }
