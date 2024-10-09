@@ -36,7 +36,7 @@ fun ForestTopBar(
             Image(imageVector = Icons.AutoMirrored.Default.ArrowBack, contentDescription = "back")
         }
         Text(text = title, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Center))
-        if (extraButton) IconButton(onClick = onExtraClick, modifier = Modifier.align(Alignment.CenterStart)) {
+        if (extraButton) IconButton(onClick = onExtraClick, modifier = Modifier.align(Alignment.CenterEnd)) {
             Text(text = extraButtonText, color = Color.Red.copy(red = .6f))
         }
     }

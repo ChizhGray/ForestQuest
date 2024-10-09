@@ -28,17 +28,17 @@ class HubViewModel(
         reduce { state.copy(items = users) }
     }
 
-    fun getUsers() = intent {
+    fun getItems() = intent {
         val users = itemsDao.getAllItems()
         reduce { state.copy(items = users) }
     }
 
-    fun insertUser(item: Item) = intent {
+    fun insertItem(item: Item) = intent {
         itemsDao.insertItem(item)
         getUsersByPlayerId()
     }
 
-    fun deleteUser(item: Item) = intent {
+    fun deleteItem(item: Item) = intent {
         itemsDao.deleteItem(item)
         getUsersByPlayerId()
     }

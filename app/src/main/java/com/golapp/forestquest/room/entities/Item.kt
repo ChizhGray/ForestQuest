@@ -6,7 +6,8 @@ import com.golapp.forestquest.koin.DB
 @Entity(tableName = DB.TAB_ITEMS)
 data class Item(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val playerId: Int,
+    val ownerId: Int,
     val name: String,
-    val age: Int
+    val itemType: String,
+    val icon: Int
 )

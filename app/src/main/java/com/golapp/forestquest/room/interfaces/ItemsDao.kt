@@ -6,10 +6,10 @@ import com.golapp.forestquest.room.entities.Item
 
 @Dao
 interface ItemsDao {
-    @Query("SELECT id, name, age, playerId FROM ${DB.TAB_ITEMS} where playerId = :playerId")
+    @Query("SELECT id, name, itemType, ownerId, icon FROM ${DB.TAB_ITEMS} where ownerId = :playerId")
     suspend fun getAllItemsByPlayerId(playerId: Int): List<Item>
 
-    @Query("SELECT id, name, age, playerId FROM ${DB.TAB_ITEMS}")
+    @Query("SELECT id, name, itemType, ownerId, icon FROM ${DB.TAB_ITEMS}")
     suspend fun getAllItems(): List<Item>
 
     @Insert
@@ -21,6 +21,6 @@ interface ItemsDao {
     @Delete
     suspend fun deleteItem(item: Item)
 
-    @Query("DELETE FROM ${DB.TAB_ITEMS} WHERE playerId = :playerId")
+    @Query("DELETE FROM ${DB.TAB_ITEMS} WHERE ownerId = :playerId")
     suspend fun deleteItemsByPlayerId(playerId: Int)
 }
