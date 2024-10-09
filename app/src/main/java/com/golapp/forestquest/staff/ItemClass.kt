@@ -25,9 +25,9 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
     Weapon(6, 15),
     Potion(30, 100),
     Enchant(16, 100);
-    fun tryToGetIt(): ItemClass? {
+    fun tryToGetIt(): ItemStats? {
         val chance = Math.random()*100
-        return if (dropChance >= chance) this
+        return if (dropChance >= chance) this.getItemStats()
         else {
             Log.e("tryToGetIt", "yourDice: ${chance}% (need:${this.dropChance}% or low)")
             null
@@ -42,7 +42,7 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
         }
     }
 
-    fun getItemStats(): ItemStats {
+    private fun getItemStats(): ItemStats {
         return when(this) {
             Armor -> {
                 if (isRare()) {

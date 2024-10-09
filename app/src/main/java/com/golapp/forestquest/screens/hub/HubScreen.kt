@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.*
 import com.golapp.forestquest.room.entities.Item
 import com.golapp.forestquest.staff.*
+import com.golapp.forestquest.utils.extentions.clickableWithoutIndication
 import com.golapp.forestquest.widgets.ForestTopBar
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -33,23 +34,46 @@ fun HubScreen(
         ) {
             onBackClick()
         }
-        Box {
-            Text(text = "playerId=${state.player.id}",
-                Modifier
-                    .padding(3.dp)
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(Color.LightGray)
-                    .fillMaxWidth())
+        Column(
+            Modifier
+                .background(Color.LightGray)
+                .fillMaxWidth()
+                .height(200.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            state.monster?.let {
+                Box(modifier = Modifier
+                    .border(1.dp, Color.Black)
+                    .size(100.dp, 20.dp)) {
+                    Box(
+                        Modifier
+                            .background(Color.Green)
+                            .fillMaxHeight()
+                            .fillMaxWidth(it.health.current.toFloat() / it.health.max)
+                            .align(Alignment.CenterStart)
+                    )
+                    Text(text = "${it.health.current}/${it.health.max}", modifier = Modifier.align(Alignment.Center), fontSize = 12.sp)
+                }
+                Text(text = it.name)
+                Image(
+                    painter = painterResource(id = it.image),
+                    contentDescription = "monster",
+                    modifier = Modifier
+                        .padding(top = 5.dp)
+                        .size(60.dp)
+                        .clickableWithoutIndication {
+                            vm.hitMonster(15)
+                        }
+                )
+            }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+        if (isTable.value) Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
             Button(
                 onClick = {
-                    ItemClass.entries.getRandom().let { randomItem ->
-                        randomItem.tryToGetIt()?.let {
-                            val stats = it.getItemStats()
-                            Log.i("get Item", stats.compositeName)
-                            vm.insertItem(stats.toItem(state.player.id))
-                        }
+                    ItemClass.entries.getRandom().tryToGetIt()?.let { stats ->
+                        Log.i("get Item", stats.compositeName)
+                        vm.insertItem(stats.toItem(state.player.id))
                     }
                 }
             ) {
@@ -67,7 +91,7 @@ fun HubScreen(
             if (isTable.value) {
                 Row(horizontalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.fillMaxWidth(.8f)) {
                     Text(text = "id", Modifier.fillMaxWidth(.1f))
-                    Text(text = "ownerId", Modifier.fillMaxWidth(.2f))
+                    Text(text = "ownerId", Modifier.fillMaxWidth(.3f))
                     Text(text = "name", Modifier.fillMaxWidth(.4f))
                     Text(text = "itemType", Modifier.fillMaxWidth())
                 }
@@ -81,16 +105,12 @@ fun HubScreen(
                                 .background(Color.LightGray)
                         ) {
                             Row(horizontalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.fillMaxWidth(.8f)) {
-                                Text(text = "${item.id}", Modifier.fillMaxWidth(.1f))
-                                Text(text = item.ownerId.toString(), Modifier.fillMaxWidth(.2f))
-                                Text(text = item.name, Modifier.fillMaxWidth(.4f))
-                                Text(text = item.itemType, Modifier.fillMaxWidth())
+                                Text(text = "${item.id}", Modifier.fillMaxWidth(.1f), fontSize = 10.sp)
+                                Text(text = item.ownerId.toString(), Modifier.fillMaxWidth(.3f), fontSize = 10.sp)
+                                Text(text = item.name, Modifier.fillMaxWidth(.4f), fontSize = 10.sp)
+                                Text(text = item.itemType, Modifier.fillMaxWidth(), fontSize = 10.sp)
                             }
-                            Row(Modifier.fillMaxWidth()) {
-                                IconButton(onClick = { vm.deleteItem(item) }) {
-                                    Text(text = "del")
-                                }
-                            }
+                            Text(text = "delete", modifier = Modifier.clickable { vm.deleteItem(item) })
                         }
                     }
                 }

@@ -7,12 +7,14 @@ import com.golapp.forestquest.room.interfaces.*
 @Database(
     entities = [
         Item::class,
-        Player::class
+        Player::class,
+        Monster::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun itemsDao(): ItemsDao
     abstract fun playerDao(): PlayerDao
+    abstract fun monstersDao(): MonstersDao
 }

@@ -12,6 +12,7 @@ val appModule = module {
     single<AppDatabase> { getDatabase(get()) }
     single<ItemsDao> { get<AppDatabase>().itemsDao() }
     single<PlayerDao> { get<AppDatabase>().playerDao() }
+    single<MonstersDao> { get<AppDatabase>().monstersDao() }
     viewModel {
         StartViewModel(
             playerDao = get(),
@@ -21,7 +22,8 @@ val appModule = module {
     viewModel {(player: Player) ->
         HubViewModel(
             player = player,
-            itemsDao = get()
+            itemsDao = get(),
+            monstersDao = get()
         )
     }
 }

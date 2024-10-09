@@ -8,6 +8,7 @@ object DB {
     const val DB_NAME = "app_database"
     const val TAB_ITEMS = "items"
     const val TAB_PLAYERS = "players"
+    const val TAB_MONSTERS = "monsters"
 }
 
 fun getDatabase(ctx: Context): AppDatabase {
