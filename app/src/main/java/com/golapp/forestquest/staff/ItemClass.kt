@@ -15,9 +15,6 @@ data class ItemStats(
         ownerId = playerId,
         icon = icon
     )
-    companion object {
-        const val Basic = "Basic"
-    }
 }
 
 enum class ItemClass(private val dropChance: Int, private val rareElementChance: Int) {
@@ -48,8 +45,8 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
                     )
                 } else ItemStats(
                     compositeName = this.name,
-                    elementName = ItemStats.Basic,
-                    icon = R.drawable.armor_basic
+                    elementName = Basic.BasicArmor.name,
+                    icon = Basic.BasicArmor.icon
                 )
             }
             Weapon -> {
@@ -62,8 +59,8 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
                     )
                 } else ItemStats(
                     compositeName = this.name,
-                    elementName = ItemStats.Basic,
-                    icon = R.drawable.sword_basic
+                    elementName = Basic.BasicWeapon.name,
+                    icon = Basic.BasicWeapon.icon
                 )
             }
             Potion -> {
@@ -86,6 +83,10 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
     }
 }
 
+enum class Basic(val icon: Int) {
+    BasicArmor(R.drawable.armor_basic),
+    BasicWeapon(R.drawable.sword_basic)
+}
 
 enum class WeaponElement(val icon: Int) {
     Flame(R.drawable.sword_flame),

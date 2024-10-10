@@ -12,6 +12,9 @@ interface PlayerDao {
     @Insert
     suspend fun insertPlayer(user: Player)
 
+    @Update
+    suspend fun updatePlayer(user: Player)
+
     @Delete
     suspend fun deletePlayer(user: Player)
 }

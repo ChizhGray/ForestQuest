@@ -66,6 +66,9 @@ fun StartScreen(
             }
         }
     }
+    LaunchedEffect(key1 = Unit) {
+        vm.getPlayers()
+    }
     Box {
         Column(
             Modifier.padding(horizontal = 10.dp),

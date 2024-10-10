@@ -24,7 +24,7 @@ data class StartViewModel(
             )
         )
 
-    init { getPlayers() }
+    //init { getPlayers() }
 
     @OptIn(OrbitExperimental::class)
     fun changeInputFieldValue(value: String) = blockingIntent {
@@ -47,7 +47,7 @@ data class StartViewModel(
         reduce { state.copy(selectedPlayer = player) }
     }
 
-    private fun getPlayers() = intent {
+    fun getPlayers() = intent {
         val players = playerDao.getAllPlayers()
         reduce { state.copy(players = players) }
     }

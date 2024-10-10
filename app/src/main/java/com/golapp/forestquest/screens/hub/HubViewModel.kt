@@ -1,10 +1,20 @@
 package com.golapp.forestquest.screens.hub
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.forestrun.newgame.extentions.showToast
+import com.example.forestrun.newgame.extentions.vibrateOnce
 import com.golapp.forestquest.room.entities.*
 import com.golapp.forestquest.room.interfaces.*
 import com.golapp.forestquest.staff.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.*
 import org.orbitmvi.orbit.syntax.simple.*
 import org.orbitmvi.orbit.viewmodel.container
@@ -12,8 +22,10 @@ import java.util.UUID
 
 class HubViewModel(
     player: Player,
+    private val playerDao: PlayerDao,
     private val itemsDao: ItemsDao,
     private val monstersDao: MonstersDao,
+    private val context: () -> Application,
 ) : ContainerHost<HubState, HubSideEffect>, ViewModel() {
     override val container: Container<HubState, HubSideEffect> =
         container(
@@ -24,9 +36,24 @@ class HubViewModel(
             )
         )
 
+    private var job: Job? = null
+
     init {
         getItemsByPlayerId()
         getMonsterFromDB()
+    }
+
+    fun ticker(action: () -> Unit) {
+        if (job!=null) {
+            job?.cancel()
+            job = null
+        }
+        else job = viewModelScope.launch {
+            while (true) {
+                action()
+                delay(500)
+            }
+        }
     }
 
     private fun getItemsByPlayerId() = intent {
@@ -77,6 +104,7 @@ class HubViewModel(
     }
 
     fun hitMonster(damage: Int) = intent {
+        context().vibrateOnce(20)
         state.monster?.let {
             val healthAfterDamage = it.health.current - damage
             reduce {
@@ -114,4 +142,56 @@ class HubViewModel(
         itemsDao.deleteItem(item)
         getItemsByPlayerId()
     }
+
+    fun useItem(item: Item) = intent {
+        context().vibrateOnce(70)
+        Log.i("useItem", item.itemType)
+        when (item.itemType) {
+            Basic.BasicWeapon.name -> {
+                val newAttackStat = state.player.attack + 1
+                viewModelScope.launch(Dispatchers.Main) {
+                    context().showToast("player attack +1")
+                }
+                playerDao.updatePlayer(state.player.copy(attack = newAttackStat))
+                reduce {
+                    state.copy(player = state.player.copy(attack = newAttackStat))
+                }
+                deleteItem(item)
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

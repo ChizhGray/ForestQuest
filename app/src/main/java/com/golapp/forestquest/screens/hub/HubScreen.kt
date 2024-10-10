@@ -51,8 +51,10 @@ fun HubScreen(
         ) {
             if (!isTable.value) state.monster?.let {
                 Box(modifier = Modifier
+                    .padding(top = 10.dp)
                     .border(1.dp, Color.Black)
-                    .size(100.dp, 20.dp)) {
+                    .size(100.dp, 20.dp)
+                ) {
                     Box(
                         Modifier
                             .background(Color.Green)
@@ -118,6 +120,17 @@ fun HubScreen(
                     }
                 }
             } else {
+                Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(2.dp), modifier = Modifier
+                        .padding(2.dp, 5.dp)
+                        .border(1.dp, Color.Black)
+                        .padding(5.dp, 10.dp)) {
+                        Text(text = "player attack:")
+                        Text(text = state.player.attack.toString(), color = Color.Red)
+                    }
+                    Text(text = "Auto", modifier = Modifier.padding(horizontal = 10.dp).clickable { vm.ticker { vm.hitMonster(state.player.attack) } })
+                }
+
                 FlowRow {
                     state.items.sortedBy { it.name }.groupBy { it.name }.forEach { itemMap ->
                         val menu = remember { mutableStateOf(false) }
@@ -152,7 +165,7 @@ fun HubScreen(
                                         text = "Use",
                                         color = Color.Green,
                                         modifier = Modifier.clickable {
-                                            vm.deleteItem(it)
+                                            vm.useItem(it)
                                             menu.value = false
                                         }
                                     )
