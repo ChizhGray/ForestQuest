@@ -100,9 +100,9 @@ class HubViewModel(
         }
     }
 
-    fun getItems() = intent {
-        val users = itemsDao.getAllItems()
-        reduce { state.copy(items = users) }
+    fun removeAllItems() = intent {
+        itemsDao.deleteItemsByPlayerId(state.player.id)
+        reduce { state.copy(items = emptyList()) }
     }
 
     fun insertItem(item: Item) = intent {

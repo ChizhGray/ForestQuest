@@ -23,4 +23,5 @@ interface ItemsDao {
 
     @Query("DELETE FROM ${DB.TAB_ITEMS} WHERE ownerId = :playerId")
     suspend fun deleteItemsByPlayerId(playerId: Int)
+
 }

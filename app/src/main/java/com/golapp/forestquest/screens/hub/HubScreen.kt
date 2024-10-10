@@ -24,7 +24,7 @@ fun HubScreen(
     onBackClick: () -> Unit
 ) {
     val state by vm.container.stateFlow.collectAsState()
-    val isTable = remember { mutableStateOf(false) }
+    val isTable = remember { mutableStateOf(true) }
 
     DisposableEffect(key1 = Unit) {
         onDispose {
@@ -43,13 +43,12 @@ fun HubScreen(
         }
         Column(
             Modifier
-                .background(Color.LightGray)
                 .fillMaxWidth()
-                .height(200.dp),
+                .height(if (isTable.value) 0.dp else 200.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            state.monster?.let {
+            if (!isTable.value) state.monster?.let {
                 Box(modifier = Modifier
                     .border(1.dp, Color.Black)
                     .size(100.dp, 20.dp)) {
@@ -68,7 +67,7 @@ fun HubScreen(
                     contentDescription = "monster",
                     modifier = Modifier
                         .padding(top = 5.dp)
-                        .size(60.dp)
+                        .size(250.dp)
                         .clickableWithoutIndication {
                             vm.hitMonster(15)
                         }
@@ -84,15 +83,15 @@ fun HubScreen(
                     }
                 }
             ) {
-                Text(text = "get Item(${state.items.size})")
+                Text(text = "get Item")
             }
-            Button(onClick = { vm.getItems() }) {
-                Text(text = "get All Players Items")
+            Button(onClick = { vm.removeAllItems() }) {
+                Text(text = "remove all items")
             }
         }
         if (state.items.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "No Items")
+                Text(text = "No Items(${state.items.size})")
             }
         } else {
             if (isTable.value) {
