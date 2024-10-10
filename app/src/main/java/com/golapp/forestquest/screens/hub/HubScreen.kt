@@ -25,6 +25,13 @@ fun HubScreen(
 ) {
     val state by vm.container.stateFlow.collectAsState()
     val isTable = remember { mutableStateOf(false) }
+
+    DisposableEffect(key1 = Unit) {
+        onDispose {
+            vm.saveMonsterToDB()
+        }
+    }
+
     Column {
         ForestTopBar(
             title = "HubScreen",

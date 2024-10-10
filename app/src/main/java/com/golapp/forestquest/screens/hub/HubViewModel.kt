@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.golapp.forestquest.room.entities.*
 import com.golapp.forestquest.room.interfaces.*
 import com.golapp.forestquest.staff.*
-import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.*
 import org.orbitmvi.orbit.syntax.simple.*
 import org.orbitmvi.orbit.viewmodel.container
+import java.util.UUID
 
 class HubViewModel(
     player: Player,
@@ -25,38 +25,55 @@ class HubViewModel(
         )
 
     init {
-        getUsersByPlayerId()
-        getMonster(true)
+        getItemsByPlayerId()
+        getMonsterFromDB()
     }
 
-    private fun getUsersByPlayerId() = intent {
-        val users = itemsDao.getAllItemsByPlayerId(state.player.id)
-        reduce { state.copy(items = users) }
+    private fun getItemsByPlayerId() = intent {
+        val itemsFromDB = itemsDao.getAllItemsByPlayerId(state.player.id)
+        reduce { state.copy(items = itemsFromDB) }
     }
 
-    private fun getMonster(fromDB: Boolean) = intent {
-        val loadedMonster = monstersDao.getMonsters().firstOrNull()
+    private fun getRandomMonster() = intent {
         var nextMonsterImage = monsterList.getRandom()
-        while (nextMonsterImage == loadedMonster?.image) {
-            Log.e("nextMonster skip iteration", nextMonsterImage.toString())
+        while (nextMonsterImage == state.monster?.image) {
+            Log.e("getRandomMonster nextMonster skip iteration", nextMonsterImage.toString())
             nextMonsterImage = monsterList.getRandom()
         }
+        val randomUUID = UUID.randomUUID().toString()
         val randomMonster = Monster(
-            ownerId = state.player.id,
-            name = "NoGeneratedMonsterName",
+            id = state.player.id,
+            name = randomUUID.takeLast(8),
             image = nextMonsterImage,
             health = Durability(100, 100),
-            lootMultiplier = 1
+            lootMultiplier = 10
         )
-        val nextMonster = loadedMonster ?: randomMonster
-        reduce { state.copy(monster = if (fromDB) nextMonster else randomMonster) }
+        reduce { state.copy(monster = randomMonster) }
     }
 
-    private fun deleteMonster() = intent {
-        state.monster?.let {
-            monstersDao.deleteMonster(it)
-            reduce { state.copy(monster = null) }
+    fun saveMonsterToDB() = intent {
+        val monsterInDB = monstersDao.getMonstersBy(state.player.id).firstOrNull()
+        if (monsterInDB==null) {
+            state.monster?.let { insertMonster(it) }
+        } else {
+            state.monster?.let { updateMonsterFromDB(it) }
         }
+    }
+
+    private suspend fun updateMonsterFromDB(monster: Monster)  {
+        monstersDao.updateMonster(monster)
+    }
+
+    private suspend fun insertMonster(monster: Monster)  {
+        monstersDao.insertMonster(monster)
+    }
+
+    private fun getMonsterFromDB() = intent {
+        val monsters = monstersDao.getMonstersBy(state.player.id)
+        Log.e("monstersInDB", "${monsters.size} $monsters")
+        val monster = monsters.firstOrNull()
+        if (monster == null) getRandomMonster()
+        else reduce { state.copy(monster = monster) }
     }
 
     fun hitMonster(damage: Int) = intent {
@@ -74,13 +91,11 @@ class HubViewModel(
             if (healthAfterDamage<=0) {
                 repeat(it.lootMultiplier) {
                     ItemClass.entries.getRandom().tryToGetIt()?.let { stats ->
-                        Log.i("get Item", stats.compositeName)
+                        Log.i("get Item (#$it)", stats.compositeName)
                         insertItem(stats.toItem(state.player.id))
-                    }
+                    } ?: Log.e("get Item (#$it)", "failed")
                 }
-                deleteMonster()
-                delay(1000)
-                getMonster(false)
+                getRandomMonster()
             }
         }
     }
@@ -92,11 +107,11 @@ class HubViewModel(
 
     fun insertItem(item: Item) = intent {
         itemsDao.insertItem(item)
-        getUsersByPlayerId()
+        getItemsByPlayerId()
     }
 
     fun deleteItem(item: Item) = intent {
         itemsDao.deleteItem(item)
-        getUsersByPlayerId()
+        getItemsByPlayerId()
     }
 }
