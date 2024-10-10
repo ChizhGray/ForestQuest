@@ -6,7 +6,7 @@ import com.golapp.forestquest.room.entities.*
 
 @Dao
 interface PlayerDao {
-    @Query("SELECT id, name, classOfPlayer FROM ${DB.TAB_PLAYERS}")
+    @Query("SELECT id, name, classOfPlayer, attack, defence FROM ${DB.TAB_PLAYERS}")
     suspend fun getAllPlayers(): List<Player>
 
     @Insert

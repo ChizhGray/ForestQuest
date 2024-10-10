@@ -10,5 +10,7 @@ import kotlinx.serialization.Serializable
 data class Player(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val classOfPlayer: String
+    val classOfPlayer: String,
+    val attack: Int,
+    val defence: Int
 )

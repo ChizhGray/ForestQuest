@@ -16,6 +16,7 @@ import com.golapp.forestquest.room.entities.Item
 import com.golapp.forestquest.staff.*
 import com.golapp.forestquest.utils.extentions.clickableWithoutIndication
 import com.golapp.forestquest.widgets.ForestTopBar
+import com.golapp.forestquest.widgets.bounce.BounceImage
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -24,7 +25,7 @@ fun HubScreen(
     onBackClick: () -> Unit
 ) {
     val state by vm.container.stateFlow.collectAsState()
-    val isTable = remember { mutableStateOf(true) }
+    val isTable = remember { mutableStateOf(false) }
 
     DisposableEffect(key1 = Unit) {
         onDispose {
@@ -62,16 +63,12 @@ fun HubScreen(
                     Text(text = "${it.health.current}/${it.health.max}", modifier = Modifier.align(Alignment.Center), fontSize = 12.sp)
                 }
                 Text(text = it.name)
-                Image(
-                    painter = painterResource(id = it.image),
-                    contentDescription = "monster",
-                    modifier = Modifier
-                        .padding(top = 5.dp)
-                        .size(250.dp)
-                        .clickableWithoutIndication {
-                            vm.hitMonster(15)
-                        }
-                )
+                BounceImage(image = it.image, modifier = Modifier
+                    .padding(top = 5.dp)
+                    .size(250.dp)
+                ) {
+                    vm.hitMonster(state.player.attack)
+                }
             }
         }
         if (isTable.value) Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
