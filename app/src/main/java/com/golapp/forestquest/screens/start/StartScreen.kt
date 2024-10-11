@@ -127,6 +127,7 @@ fun StartScreen(
                     ) {
                         state.selectedPlayer?.let { playerWithData ->
                             onPlayClick(playerWithData)
+                            vm.selectPlayer(null)
                         }
                     }
                     ForestConfirmButton(
@@ -207,7 +208,11 @@ fun StartScreen(
                     title = "Создать игрока",
                     isActive = state.inputFieldValue.isNotBlank() && state.playerClass != null
                 ) {
-                    state.playerClass?.let { vm.insertPlayer(Player(name = state.inputFieldValue, classOfPlayer = it.name, attack = 5, defence = 0)) }
+                    state.playerClass?.let {
+                        val newPlayer = Player(name = state.inputFieldValue, classOfPlayer = it.name, attack = 5, defence = 0)
+                        vm.insertPlayer(newPlayer)
+                        vm.selectPlayer(newPlayer)
+                    }
                     sheetState.hideBS()
                 }
             }

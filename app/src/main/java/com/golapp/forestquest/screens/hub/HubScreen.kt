@@ -128,7 +128,9 @@ fun HubScreen(
                         Text(text = "player attack:")
                         Text(text = state.player.attack.toString(), color = Color.Red)
                     }
-                    Text(text = "Auto", modifier = Modifier.padding(horizontal = 10.dp).clickable { vm.ticker { vm.hitMonster(state.player.attack) } })
+                    Text(text = "Auto", modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .clickable { vm.ticker { vm.hitMonster(state.player.attack) } })
                 }
 
                 FlowRow {
@@ -138,17 +140,13 @@ fun HubScreen(
                             modifier = Modifier
                                 .size(60.dp)
                                 .clip(RoundedCornerShape(5.dp))
-                                .clickable {
-                                    menu.value = true
-                                },
+                                .border(1.dp, if (menu.value) Color.Black else Color.Transparent, RoundedCornerShape(5.dp)),
                             contentAlignment = Alignment.BottomEnd
                         ) {
                             itemMap.value.firstOrNull()?.let {
-                                Image(
-                                    painter = painterResource(id = it.icon),
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentDescription = null
-                                )
+                                BounceImage(modifier = Modifier.fillMaxSize(), image = it.icon) {
+                                    menu.value = true
+                                }
                                 Text(
                                     text = itemMap.value.size.toString(),
                                     fontSize = 16.sp,
@@ -160,7 +158,7 @@ fun HubScreen(
                                     onDismissRequest = { menu.value = false }
                                 ) {
                                     Text(text = itemMap.key)
-                                    Text(text = it.itemType)
+                                    Text(text = it.description)
                                     Text(
                                         text = "Use",
                                         color = Color.Green,

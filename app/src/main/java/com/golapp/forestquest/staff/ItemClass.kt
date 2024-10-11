@@ -7,11 +7,13 @@ import com.golapp.forestquest.room.entities.Item
 data class ItemStats(
     val compositeName: String,
     val elementName: String,
+    val description: String,
     val icon: Int
 ) {
     fun toItem(playerId: Int) = Item(
         name = compositeName,
         itemType = elementName,
+        description = description,
         ownerId = playerId,
         icon = icon
     )
@@ -41,11 +43,13 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
                     ItemStats(
                         compositeName = "$randomElement ${this.name}",
                         elementName = randomElement.name,
+                        description = "${randomElement.name} description",
                         icon = randomElement.icon
                     )
                 } else ItemStats(
                     compositeName = this.name,
                     elementName = Basic.BasicArmor.name,
+                    description = "${Basic.BasicArmor.name} description",
                     icon = Basic.BasicArmor.icon
                 )
             }
@@ -55,11 +59,13 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
                     ItemStats(
                         compositeName = "$randomElement ${this.name}",
                         elementName = randomElement.name,
+                        description = "attack +${randomElement.attack}",
                         icon = randomElement.icon
                     )
                 } else ItemStats(
                     compositeName = this.name,
                     elementName = Basic.BasicWeapon.name,
+                    description = "attack +1",
                     icon = Basic.BasicWeapon.icon
                 )
             }
@@ -67,6 +73,7 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
                 val randomElement = PotionElement.entries.getRandom()
                 ItemStats(
                     compositeName = "$randomElement ${this.name}",
+                    description = "${randomElement.name} description",
                     elementName = randomElement.name,
                     icon = randomElement.icon
                 )
@@ -75,6 +82,7 @@ enum class ItemClass(private val dropChance: Int, private val rareElementChance:
                 val randomElement = EnchantElement.entries.getRandom()
                 ItemStats(
                     compositeName = "${this.name} $randomElement",
+                    description = "${randomElement.name} description",
                     elementName = randomElement.name,
                     icon = randomElement.icon
                 )
@@ -88,9 +96,9 @@ enum class Basic(val icon: Int) {
     BasicWeapon(R.drawable.sword_basic)
 }
 
-enum class WeaponElement(val icon: Int) {
-    Flame(R.drawable.sword_flame),
-    Cold(R.drawable.sword_frost)
+enum class WeaponElement(val icon: Int, val attack: Int) {
+    Flame(R.drawable.sword_flame, 5),
+    Cold(R.drawable.sword_frost, 3)
 }
 
 enum class ArmorElement(val icon: Int) {

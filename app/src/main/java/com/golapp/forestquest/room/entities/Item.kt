@@ -8,6 +8,7 @@ data class Item(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val ownerId: Int,
     val name: String,
+    val description: String,
     val itemType: String,
     val icon: Int
 )

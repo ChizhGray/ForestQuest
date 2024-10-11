@@ -6,10 +6,10 @@ import com.golapp.forestquest.room.entities.Item
 
 @Dao
 interface ItemsDao {
-    @Query("SELECT id, name, itemType, ownerId, icon FROM ${DB.TAB_ITEMS} where ownerId = :playerId")
+    @Query("SELECT id, name, itemType, description, ownerId, icon FROM ${DB.TAB_ITEMS} where ownerId = :playerId")
     suspend fun getAllItemsByPlayerId(playerId: Int): List<Item>
 
-    @Query("SELECT id, name, itemType, ownerId, icon FROM ${DB.TAB_ITEMS}")
+    @Query("SELECT id, name, itemType, description, ownerId, icon FROM ${DB.TAB_ITEMS}")
     suspend fun getAllItems(): List<Item>
 
     @Insert

@@ -43,7 +43,7 @@ data class StartViewModel(
         }
     }
 
-    fun selectPlayer(player: Player) = intent {
+    fun selectPlayer(player: Player?) = intent {
         reduce { state.copy(selectedPlayer = player) }
     }
 

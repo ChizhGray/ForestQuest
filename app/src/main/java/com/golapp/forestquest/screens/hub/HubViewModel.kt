@@ -147,14 +147,21 @@ class HubViewModel(
         context().vibrateOnce(70)
         Log.i("useItem", item.itemType)
         when (item.itemType) {
-            Basic.BasicWeapon.name -> {
-                val newAttackStat = state.player.attack + 1
-                viewModelScope.launch(Dispatchers.Main) {
-                    context().showToast("player attack +1")
+            Basic.BasicWeapon.name,
+            WeaponElement.Cold.name,
+            WeaponElement.Flame.name -> {
+                val newAttackStat = when(item.itemType) {
+                    Basic.BasicWeapon.name -> 1
+                    WeaponElement.Cold.name -> WeaponElement.Cold.attack
+                    WeaponElement.Flame.name -> WeaponElement.Flame.attack
+                    else -> 0
                 }
-                playerDao.updatePlayer(state.player.copy(attack = newAttackStat))
+                viewModelScope.launch(Dispatchers.Main) {
+                    context().showToast("player attack +$newAttackStat")
+                }
+                playerDao.updatePlayer(state.player.copy(attack = state.player.attack + newAttackStat))
                 reduce {
-                    state.copy(player = state.player.copy(attack = newAttackStat))
+                    state.copy(player = state.player.copy(attack = state.player.attack + newAttackStat))
                 }
                 deleteItem(item)
             }
