@@ -1,6 +1,5 @@
 package com.golapp.forestquest.staff
 
-import android.util.Log
 import com.golapp.forestquest.R
 import com.golapp.forestquest.room.entities.Item
 

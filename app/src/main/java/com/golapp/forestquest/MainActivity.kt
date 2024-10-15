@@ -21,6 +21,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        getCharCodeInfo('¢')
         setContent {
             val navController = rememberNavController()
             ForestQuestTheme {
@@ -55,4 +56,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+fun getCharCodeInfo(char: Char): Pair<String, Char> {
+    // Unicode table: https://unicode-table.com/en/
+    val uni= String.format("u+%04x", char.code).uppercase()
+    val result = uni to char
+    println("The Unicode value of ${result.second} is: ${result.first}")
+    return result
 }
