@@ -1,7 +1,6 @@
 package com.golapp.forestquest.screens.hub
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +11,6 @@ import com.golapp.forestquest.room.interfaces.*
 import com.golapp.forestquest.staff.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.*
@@ -32,26 +30,44 @@ class HubViewModel(
             initialState = HubState(
                 player = player,
                 items = emptyList(),
-                monster = null
+                monster = null,
+                autoBattleIsEnable = false
             )
         )
 
-    private var job: Job? = null
+    private var autoBattleTickerJob: Job? = null
+    private var autoBattleIconAnimateJob: Job? = null
 
     init {
         getItemsByPlayerId()
         getMonsterFromDB()
     }
 
-    fun ticker(action: () -> Unit) {
-        if (job!=null) {
-            job?.cancel()
-            job = null
+    fun animate(delay: Long, onEnable: () -> Unit, onDisable: () -> Unit, action: () -> Unit) {
+        if (autoBattleIconAnimateJob!=null) {
+            autoBattleIconAnimateJob?.cancel()
+            autoBattleIconAnimateJob = null
+            onDisable()
         }
-        else job = viewModelScope.launch {
+        else autoBattleIconAnimateJob = viewModelScope.launch {
+            onEnable()
             while (true) {
                 action()
-                delay(500)
+                delay(delay)
+            }
+        }
+    }
+
+    fun autoBattle(delay: Long, action: () -> Unit) = intent {
+        if (autoBattleTickerJob!=null) {
+            autoBattleTickerJob?.cancel()
+            autoBattleTickerJob = null
+            switchAutoBattleFlag(false)
+        } else autoBattleTickerJob = viewModelScope.launch {
+            switchAutoBattleFlag(true)
+            while (true) {
+                action()
+                delay(delay)
             }
         }
     }
@@ -76,6 +92,14 @@ class HubViewModel(
             lootMultiplier = 10
         )
         reduce { state.copy(monster = randomMonster) }
+    }
+
+    fun switchAutoBattleFlag(flag: Boolean) = intent {
+        reduce {
+            state.copy(
+                autoBattleIsEnable = flag
+            )
+        }
     }
 
     fun saveMonsterToDB() = intent {

@@ -5,18 +5,23 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.*
-import com.golapp.forestquest.room.entities.Item
 import com.golapp.forestquest.staff.*
 import com.golapp.forestquest.utils.extentions.clickableWithoutIndication
 import com.golapp.forestquest.widgets.ForestTopBar
 import com.golapp.forestquest.widgets.bounce.BounceImage
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -26,6 +31,7 @@ fun HubScreen(
 ) {
     val state by vm.container.stateFlow.collectAsState()
     val isTable = remember { mutableStateOf(false) }
+    val degrees = remember { mutableFloatStateOf(0f) }
 
     DisposableEffect(key1 = Unit) {
         onDispose {
@@ -88,6 +94,54 @@ fun HubScreen(
                 Text(text = "remove all items")
             }
         }
+        if(!isTable.value) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                Row(horizontalArrangement = Arrangement.spacedBy(2.dp), modifier = Modifier
+                    .padding(2.dp, 5.dp)
+                    .border(1.dp, Color.Black)
+                    .padding(5.dp, 10.dp)) {
+                    Text(text = "player attack:")
+                    Text(text = state.player.attack.toString(), color = Color.Red)
+                }
+                Box(modifier = Modifier.size(80.dp).clickableWithoutIndication {
+                    vm.autoBattle(500) {
+                        vm.hitMonster(state.player.attack)
+                    }
+                    vm.animate(
+                        25,
+                        onEnable = {},
+                        onDisable = {}
+                    ) {
+                        if (state.autoBattleIsEnable) {
+                            if (degrees.value > 0f) degrees.value -= 5f
+                            else degrees.value = 360f
+                        }
+                    }
+                }, contentAlignment = Alignment.Center) {
+                    Icon(imageVector = Icons.Rounded.Refresh,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .alpha(if(state.autoBattleIsEnable) 1f else 0f)
+                            .rotate(degrees.floatValue)
+                            .graphicsLayer { rotationY = 180f }
+                        ,
+                        contentDescription = "auto_battle_icon"
+                    )
+                    Icon(imageVector = Icons.Default.PlayArrow,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxSize()
+                            .alpha(if(state.autoBattleIsEnable) 0f else 1f)
+                        ,
+                        contentDescription = "auto_battle_icon"
+                    )
+                    if(state.autoBattleIsEnable) Text(text = "Auto", modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                    )
+                }
+
+            }
+        }
         if (state.items.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(text = "No Items(${state.items.size})")
@@ -120,19 +174,6 @@ fun HubScreen(
                     }
                 }
             } else {
-                Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(2.dp), modifier = Modifier
-                        .padding(2.dp, 5.dp)
-                        .border(1.dp, Color.Black)
-                        .padding(5.dp, 10.dp)) {
-                        Text(text = "player attack:")
-                        Text(text = state.player.attack.toString(), color = Color.Red)
-                    }
-                    Text(text = "Auto", modifier = Modifier
-                        .padding(horizontal = 10.dp)
-                        .clickable { vm.ticker { vm.hitMonster(state.player.attack) } })
-                }
-
                 FlowRow {
                     state.items.sortedBy { it.name }.groupBy { it.name }.forEach { itemMap ->
                         val menu = remember { mutableStateOf(false) }
@@ -140,7 +181,11 @@ fun HubScreen(
                             modifier = Modifier
                                 .size(60.dp)
                                 .clip(RoundedCornerShape(5.dp))
-                                .border(1.dp, if (menu.value) Color.Black else Color.Transparent, RoundedCornerShape(5.dp)),
+                                .border(
+                                    1.dp,
+                                    if (menu.value) Color.Black else Color.Transparent,
+                                    RoundedCornerShape(5.dp)
+                                ),
                             contentAlignment = Alignment.BottomEnd
                         ) {
                             itemMap.value.firstOrNull()?.let {
